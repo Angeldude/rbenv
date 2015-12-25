@@ -43,8 +43,9 @@ RVM?**](https://github.com/rbenv/rbenv/wiki/Why-rbenv%3F)
     * [Upgrading](#upgrading)
   * [Homebrew on Mac OS X](#homebrew-on-mac-os-x)
   * [How rbenv hooks into your shell](#how-rbenv-hooks-into-your-shell)
-  * [Installing Ruby Versions](#installing-ruby-versions)
-  * [Uninstalling Ruby Versions](#uninstalling-ruby-versions)
+  * [Installing Ruby versions](#installing-ruby-versions)
+    * [Installing Ruby gems](#installing-ruby-gems)
+  * [Uninstalling Ruby versions](#uninstalling-ruby-versions)
   * [Uninstalling rbenv](#uninstalling-rbenv)
 * [Command Reference](#command-reference)
   * [rbenv local](#rbenv-local)
@@ -161,6 +162,13 @@ easy to fork and contribute any changes back upstream.
     $ git clone https://github.com/rbenv/rbenv.git ~/.rbenv
     ~~~
 
+    Optionally, try to compile dynamic bash extension to speed up rbenv. Don't
+    worry if it fails; rbenv will still work normally:
+
+    ~~~
+    $ cd ~/.rbenv && src/configure && make -C src
+    ~~~
+
 2. Add `~/.rbenv/bin` to your `$PATH` for access to the `rbenv`
    command-line utility.
 
@@ -265,7 +273,7 @@ opposed to this idea. Here's what `rbenv init` actually does:
 Run `rbenv init -` for yourself to see exactly what happens under the
 hood.
 
-### Installing Ruby Versions
+### Installing Ruby versions
 
 The `rbenv install` command doesn't ship with rbenv out of the box, but
 is provided by the [ruby-build][] project. If you installed it either
@@ -286,7 +294,30 @@ that directory can also be a symlink to a Ruby version installed
 elsewhere on the filesystem. rbenv doesn't care; it will simply treat
 any entry in the `versions/` directory as a separate Ruby version.
 
-### Uninstalling Ruby Versions
+#### Installing Ruby gems
+
+Once you've installed some Ruby versions, you'll want to install gems.
+First, ensure that the target version for your project is the one you want by
+checking `rbenv version` (see [Command Reference](#command-reference)). Select
+another version using `rbenv local 2.0.0-p247`, for example. Then, proceed to
+install gems as you normally would:
+
+```sh
+$ gem install bundler
+```
+
+**You don't need sudo** to install gems. Typically, the Ruby versions will be
+installed and writeable by your user. No extra privileges are required to
+install gems.
+
+Check the location where gems are being installed with `gem env`:
+
+```sh
+$ gem env home
+# => ~/.rbenv/versions/<ruby-version>/lib/ruby/gems/...
+```
+
+### Uninstalling Ruby versions
 
 As time goes on, Ruby versions you install will accumulate in your
 `~/.rbenv/versions` directory.
